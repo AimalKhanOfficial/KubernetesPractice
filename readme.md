@@ -5,16 +5,25 @@
 
 # Image buid/test locally
 
-- cd SomeTestAPI
-- docker build -t sometestapi .
-- docker run -d -p 3000:3000 sometestapi
+- `cd SomeTestAPI`
+- `docker build -t sometestapi .`
+- `docker run -d -p 3000:3000 sometestapi`
 
 # Deploying to Docker Hub
 
-- docker login
-- docker tag sometestapi aimalkhan26/sometesapi:latest
-- docker push aimalkhan26/sometesapi:latest
-- docker pull aimalkhan26/sometesapi:latest
-- docker run -d -p 3000:3000 aimalkhan26/sometesapi:latest
+- `docker login`
+- `docker tag sometestapi aimalkhan26/sometesapi:latest`
+- `docker push aimalkhan26/sometesapi:latest`
+- `docker pull aimalkhan26/sometesapi:latest`
+- `docker run -d -p 3000:3000 aimalkhan26/sometesapi:latest`
 
-# Deploying to Kubernetes
+# Kubernetes Setup
+
+Instead of deploying the test express server, my next steps are to deploy an Argo CD instance which then connects to the Public SomeTestAPI Repo and deploys it to my local K8s instance:
+
+- started by installing a k8s instance locally via `brew install minikube` and then `minikube start`
+- run `kubectl get all` to make the cluster's up and running (verified!)
+- created an argo cd deployment file with an external service (nodePort) - review `argo-cd-deployment.yaml`
+- before we deploy the argo-cd instance, create a new namespace for it to keep it separate from default stuff on the cluster by running `kubectl create namespace <namespace_name>`
+- applying it to the cluster via `kubectl apply -f argo-cd-deployment.yaml`
+- when deployed, find out the ip address of the cluster by running `kubectl get nodes -o wide`
