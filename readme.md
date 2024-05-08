@@ -23,6 +23,17 @@ Instead of deploying the test express server, my next steps are to deploy an Arg
 
 - started by installing a k8s instance locally via `brew install minikube` and then `minikube start`
 - run `kubectl get all` to make the cluster's up and running (verified!)
+
+# Deploying the SomeTestAPI via a deployment file
+- `kubectl apply -f sometest-api-deployment.yaml`
+- `minikube service sometestapi-server  --url` (this will give you the url for base endpoint)
+- navigate to `http://127.0.0.1:51259/`
+
+# Viewing Logs
+- `kubectl get pod`
+- `kubectl logs sometestapi-server-b8d4bfc47-zk7zp -f`
+
+# Testing Argo CD Deployment (IN PROGRESS....)
 - created an argo cd deployment file with an external service (nodePort) - review `argo-cd-deployment.yaml`
 - before we deploy the argo-cd instance, create a new namespace for it to keep it separate from default stuff on the cluster by running `kubectl create namespace <namespace_name>`
 - applying it to the cluster via `kubectl apply -f argo-cd-deployment.yaml`
