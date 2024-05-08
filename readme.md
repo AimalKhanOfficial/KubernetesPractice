@@ -1,3 +1,5 @@
+![alt text](image.png)
+
 # Basic App
 
 - created a basic express API that returns `Hello World`, running on port 3000
@@ -24,9 +26,9 @@ Instead of deploying the test express server, my next steps are to deploy an Arg
 - started by installing a k8s instance locally via `brew install minikube` and then `minikube start`
 - run `kubectl get all` to make the cluster's up and running (verified!)
 
-# Deploying the SomeTestAPI via a deployment file
+# Deploying SomeTestAPI via a deployment file
 - `kubectl apply -f sometest-api-deployment.yaml`
-- `minikube service sometestapi-server  --url` (this will give you the url for base endpoint)
+- `minikube service sometestapi-server --url` (this will give you the url for base endpoint)
 - navigate to `http://127.0.0.1:51259/`
 
 # Viewing Logs
@@ -34,7 +36,11 @@ Instead of deploying the test express server, my next steps are to deploy an Arg
 - `kubectl logs sometestapi-server-b8d4bfc47-zk7zp -f`
 
 # Testing Argo CD Deployment (IN PROGRESS....)
-- created an argo cd deployment file with an external service (nodePort) - review `argo-cd-deployment.yaml`
-- before we deploy the argo-cd instance, create a new namespace for it to keep it separate from default stuff on the cluster by running `kubectl create namespace <namespace_name>`
-- applying it to the cluster via `kubectl apply -f argo-cd-deployment.yaml`
-- when deployed, find out the ip address of the cluster by running `kubectl get nodes -o wide`
+- following the instructions here: https://argo-cd.readthedocs.io/en/stable/getting_started/
+- before we deploy the argo-cd instance, create a new namespace for it to keep it separate from default stuff on the cluster by running `kubectl create namespace argocd`
+- applying it to the cluster via `kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj/argo-cd/stable/manifests/install.yaml`
+- `brew install argocd`
+- `kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'`
+- `kubectl port-forward svc/argocd-server -n argocd 8080:443` (THIS NEEDS TO CONTINUE RUNNING FOR YOU TO ACCESS ARGO CD)
+- navigate to `https://localhost:8080/login`
+- get initial password using `argocd admin initial-password -n argocd`
